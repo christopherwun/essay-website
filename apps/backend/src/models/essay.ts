@@ -6,6 +6,7 @@ export interface IEssay {
   prompt: string; // question is the question that the essay answers
   feedback: string; // feedback is the feedback given to the essay
   user: string; // user is the username of the user who wrote the essay
+  _id?: string; // _id is the unique identifier of the essay
 }
 
 const essaySchema = new Schema<IEssay>({

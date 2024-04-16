@@ -49,7 +49,8 @@ app.use('/api/account', accRouter);
 app.use('/api/essays', eRouter);
 
 // define error handler
-function errorHandler(err, req, res, next) {
+function errorHandler(err, req, res) {
+  // eslint-disable-next-line no-console
   console.log(err.stack); // log the error for debugging purposes
   res.status(err.status || 500).json({ error: err.message });
 }

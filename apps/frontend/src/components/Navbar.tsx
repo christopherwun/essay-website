@@ -9,13 +9,12 @@ export default function Navbar({
 }: {
   user: string | null;
   logout: () => void;
-  //   toLogin: () => void;
 }) {
   const navigate = useNavigate();
 
   return (
     <div className="navbar">
-      <h1 className="title">Campuswire Lite</h1>
+      <h1 className="title">Personal Essay Tutor</h1>
       {user ? (
         <div
           style={{
@@ -24,7 +23,7 @@ export default function Navbar({
             flexDirection: 'row',
           }}
         >
-          <p>Hi, {user}!</p>
+          <p>Hi, {user}!{'  '}</p>
           <button onClick={logout}>Logout</button>
         </div>
       ) : (

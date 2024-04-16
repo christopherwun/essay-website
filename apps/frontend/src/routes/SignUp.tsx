@@ -1,24 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useForm, SubmitHandler } from "react-hook-form"
 import '../app.css';
 
-export default function LogIn() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+type FormData = {
+  username: string;
+  password: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+};
 
+export default function SignUp() {
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
 
-  function signup() {
-    // use fetch to login
+  const onSubmit: SubmitHandler<FormData> = data => {
+    // use fetch to signup
     fetch('http://localhost:8000/api/account/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username: username,
-        password: password,
+        username: data.username,
+        password: data.password,
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        admin: false,
       }),
     }).then((res) => {
       if (res.status === 201) {
@@ -31,29 +42,35 @@ export default function LogIn() {
   }
 
   return (
-    <div>
-      <h4>Username</h4>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className="input"
-      />
-
-      <h4>Password</h4>
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="input"
-      />
-
-      <button onClick={signup} className="button">
-        Sign Up
-      </button>
-
-      <h4>Already have an account?</h4>
-      <Link to="/login">Log in</Link>
-    </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="form">
+        <h1>Sign Up</h1>
+        <div className="form-inputs">
+          <label className="form-label">
+            First Name
+            <input {...register("firstName")} className='form-input'/>
+          </label>
+          <label className="form-label">
+            Last Name
+            <input {...register("lastName")} className='form-input'/>
+          </label>
+          <label className="form-label">
+            Email
+            <input {...register("email")} className='form-input'/>
+          </label>
+          <label className="form-label">
+            Username
+            <input {...register("username")} className='form-input'/>
+          </label>
+          <label className="form-label">
+            Password
+            <input {...register("password")} className='form-input'/>
+          </label>
+          <button type="submit" className="form-button">Submit</button>
+        <h4>
+          Already have an account?{'  '}
+          <Link to="/login">Log in</Link>
+        </h4>
+        </div>        
+      </form>
   );
 }

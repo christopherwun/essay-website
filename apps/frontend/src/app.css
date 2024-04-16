@@ -34,7 +34,8 @@
   align-items: flex-start;
 }
 
-.posts {
+/* STYLING FOR ESSAY LIST */
+.essays {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -70,22 +71,12 @@
   /* align to top of the main container */
 }
 
-.post-button {
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  padding: 0;
-}
-
-.input {
-  /* margin-left: 0.5em; */
-  height: 2em;
-  margin-right: 0.5em;
-  /* margin: 0.5em; */
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1em;
-  /* width: 100%; */
+.essay-button {
+  flex: 1;
+  margin-bottom: 1em;
+  /* orange color */
+  background-color: #fd951d;
+  width: 100%;
 }
 
 .answer-input {
@@ -101,23 +92,63 @@
   margin-bottom: 1em;
 }
 
-.button {
-  flex: 1;
-  margin-bottom: 1em;
-  /* orange color */
-  background-color: #ff9620;
-}
-
-.post-preview {
+.essay-preview {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-bottom: 1px solid #e0e0e0;
+  /* left align */
+  align-items: flex-start;
+  border: 2px solid #e0e0e0;
+  /* border-bottom: 1px solid #000000; */
   border-radius: 0px;
+  background-color: #ffffff;
+  color: #000000;
 }
 
 .title {
   font-size: 2em;
   margin-bottom: 1em;
+}
+
+
+/* STYLING FOR FORMS */
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  height: 90vh;
+  max-height: 100vh;
+}
+
+.form-inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-label {
+  margin-bottom: 0.5em;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.form-input {
+  margin: 0.75em;
+  margin-right: 0;
+  padding-bottom: 0.5em;
+  height: 2em;
+  width: 18em;
+}
+
+.form-button {
+  flex: 1;
+  margin-top: 1em;
+  /* orange color */
+  background-color: #fd951d;
+  width: 100%;
 }

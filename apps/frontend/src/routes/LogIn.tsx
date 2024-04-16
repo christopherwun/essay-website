@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useForm, SubmitHandler } from "react-hook-form"
 import '../app.css';
 
+type FormData = {
+  username: string;
+  password: string;
+};
+
 export default function LogIn() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
 
-  function login() {
+  const onSubmit: SubmitHandler<FormData> = data => {
     // use fetch to login
     fetch('http://localhost:8000/api/account/login', {
       method: 'POST',
@@ -18,8 +22,8 @@ export default function LogIn() {
       },
       credentials: 'include',
       body: JSON.stringify({
-        username: username,
-        password: password,
+        username: data.username,
+        password: data.password,
       }),
     }).then((res) => {
       if (res.status === 200) {
@@ -32,28 +36,27 @@ export default function LogIn() {
   }
 
   return (
-    <div>
-      <h4>Username</h4>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className="input"
-      />
+    <form onSubmit={handleSubmit(onSubmit)} className="form">
+      <h1>Log In</h1>
+      <div className="form-inputs">
+        <label className="form-label">
+          Username
+          <input {...register("username")} className='form-input'/>
+        </label>
+        <label className="form-label">
+          Password
+          <input {...register("password")} className='form-input'/>
+        </label>
+      <button type="submit" className="form-button">
+        Log In
+      </button>
+      <h4>
+          {/* eslint-disable-next-line react/no-unescaped-entities */}
+          Don't have an account?{' '}
+          <Link to="/signup">Sign Up</Link>
+        </h4>
+        </div>
 
-      <h4>Password</h4>
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="input"
-      />
-
-      <button onClick={login}>Login</button>
-
-      {/* eslint-disable-next-line react/no-unescaped-entities */}
-      <h4>Don't have an account?</h4>
-      <Link to="/signup">Sign up</Link>
-    </div>
+    </form>
   );
 }

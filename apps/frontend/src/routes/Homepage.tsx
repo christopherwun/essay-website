@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'simple-react-modal';
 import Navbar from '../components/Navbar';
 import '../app.css';
-import PostList from '../components/PostList';
-import PostBody from '../components/PostBody';
+import EssayList from '../components/EssayList';
+import EssayBody from '../components/EssayBody';
 import axios from 'axios';
 
 export default function Homepage() {
   const [user, setUser] = useState(null);
-  const [focusedPost, setFocusedPost] = useState(null);
+  const [focusedEssay, setFocusedEssay] = useState(null);
 
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState('');
@@ -71,7 +71,7 @@ export default function Homepage() {
         style={{ background: 'grey', opacity: '0.9' }}
       >
         <div>
-          <h2>Post a question</h2>
+          <h2>New Prompt</h2>
           <textarea
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
@@ -90,16 +90,16 @@ export default function Homepage() {
       {/* Main div for post button (if logged in), posts */}
       <div className="main">
         {/* Left div for list of posts and post button */}
-        <PostList
+        <EssayList
           user={user}
-          makePost={() => setShowModal(true)}
-          setFocusedPost={setFocusedPost}
+          addEssay={() => setShowModal(true)}
+          setFocusedEssay={setFocusedEssay}
         />
 
         {/* Right div for actual post body and answer button */}
-        <PostBody
-          focusedPost={focusedPost}
-          setFocusedPost={setFocusedPost}
+        <EssayBody
+          focusedEssay={focusedEssay}
+          setFocusedEssay={setFocusedEssay}
           user={user}
         />
       </div>
