@@ -5,6 +5,7 @@ import '../app.css';
 import EssayList from '../components/EssayList';
 import EssayBody from '../components/EssayBody';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Homepage() {
   const [user, setUser] = useState(null);
@@ -12,6 +13,8 @@ export default function Homepage() {
 
   const [showModal, setShowModal] = useState(false);
   const [question, setQuestion] = useState('');
+
+  const navigate = useNavigate();
 
   // check if user is logged in, making sure to pass the proper authorization headers
   useEffect(() => {
@@ -22,9 +25,15 @@ export default function Homepage() {
       .then((res) => {
         if (res.status === 200) {
           setUser(res.data.username);
+        } else {
+          setUser(null);
+          setFocusedEssay(null);
+          navigate('/login');
+          // clear cookies
+          document.cookie = '';
         }
       });
-  }, [user]);
+  }, [user, navigate]);
 
   function logout() {
     fetch('/api/account/logout', {
@@ -36,19 +45,24 @@ export default function Homepage() {
     }).then((res) => {
       if (res.status === 200) {
         setUser(null);
+        setFocusedEssay(null);
+        navigate('/login');
+        // clear cookies
+        document.cookie = '';
       }
     });
   }
 
   function sendPost() {
-    fetch('/api/questions/add', {
+    fetch('/api/essays/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
       body: JSON.stringify({
-        questionText: question,
+        prompt: question,
+        essayText: '', 
       }),
     }).then((res) => {
       if (res.status === 201) {
@@ -100,7 +114,6 @@ export default function Homepage() {
         <EssayBody
           focusedEssay={focusedEssay}
           setFocusedEssay={setFocusedEssay}
-          user={user}
         />
       </div>
     </div>

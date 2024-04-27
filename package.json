@@ -17,6 +17,8 @@
     "react-bootstrap": "^2.10.2",
     "react-hook-form": "^7.51.3",
     "simple-react-modal": "^0.5.1",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "turbo": "^1.11.2"
   },
   "devDependencies": {

@@ -2,6 +2,7 @@ import express from 'express';
 import User from '../models/user';
 import bcrypt from 'bcryptjs';
 import requireAuth from '../middlewares/require-auth';
+import Essay from '../models/essay';
 
 const accRouter = express.Router();
 
@@ -25,6 +26,32 @@ accRouter.post('/signup', async (req, res, next) => {
       essays: [],
     });
 
+    // Add the default essay prompts (10 of them)
+    const defaultEssays = [
+      'What is your favorite book?',
+      'What is your favorite movie?',
+      'What is your favorite song?',
+      'What is your favorite food?',
+      'What is your favorite color?',
+      'What is your favorite animal?',
+      'What is your favorite sport?',
+      'What is your favorite hobby?',
+      'What is your favorite place to visit?',
+      'What is your favorite thing to do?',
+    ];
+
+    // Make essay objects and save them to the database
+    for (const prompt of defaultEssays) {
+      const essay = new Essay({
+        essayText: '',
+        prompt,
+        feedback: '',
+        user: req.body.username,
+      });
+      await essay.save();
+      user.essays.push(essay._id);
+    }
+
     // Save user to database
     await user.save();
     res.status(201).json({ message: 'User created' });
@@ -38,12 +65,13 @@ accRouter.post('/signup', async (req, res, next) => {
 
 accRouter.post('/login', async (req, res, next) => {
   try {
-    // Check if already logged in
-    if (req.session!.user) {
-      res.status(400).json({ message: 'Already logged in' });
-      next();
-      return;
-    }
+    // // Check if already logged in
+    // if (req.session!.user) {
+    //   // RETURN 200 OK
+    //   res.status(200).json({ message: 'Already logged in' });
+    //   next();     
+    //   return;
+    // }
     const user = await User.findOne({ username: req.body.username });
     if (!user) {
       res.status(401).json({ message: 'User does not exist' });
@@ -58,6 +86,8 @@ accRouter.post('/login', async (req, res, next) => {
     }
     req.session!.user = user.username;
     res.status(200).json({ message: 'Login successful' });
+    next();
+    
   } catch (err) {
     res.status(403).json({ message: 'Unauthorized' });
     // console.error(err);

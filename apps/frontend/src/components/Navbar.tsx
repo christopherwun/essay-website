@@ -19,12 +19,13 @@ export default function Navbar({
         <div
           style={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'space-between',
             flexDirection: 'row',
           }}
         >
-          <p>Hi, {user}!{'  '}</p>
-          <button onClick={logout}>Logout</button>
+          {/* Include a space after Hi user */}
+          <p>Hi {user} </p>
+          <button onClick={logout} className='answer-button'>Logout</button>
         </div>
       ) : (
         <button onClick={() => navigate('/login')}>Login</button>

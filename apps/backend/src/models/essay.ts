@@ -12,7 +12,7 @@ export interface IEssay {
 const essaySchema = new Schema<IEssay>({
   essayText: {
     type: String,
-    required: true,
+    required: false,
   },
   prompt: {
     type: String,

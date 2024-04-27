@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from "react-hook-form"
@@ -13,12 +13,27 @@ export default function LogIn() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
+  useEffect(() => {
+    // check if logged in aleready
+    fetch('/api/account/user', {
+      method: 'GET',
+      credentials: 'include',
+    }).then((res) => {
+      if (res.status === 200) {
+        navigate('/');
+      }
+    });
+  });
+    
+
   const onSubmit: SubmitHandler<FormData> = data => {
+    console.log(data);
     // use fetch to login
-    fetch('http://localhost:8000/api/account/login', {
+    fetch('/api/account/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        // 'Connection': 'close'
       },
       credentials: 'include',
       body: JSON.stringify({
@@ -26,11 +41,19 @@ export default function LogIn() {
         password: data.password,
       }),
     }).then((res) => {
+      console.log(res); // Log the entire response object
+      console.log(res.status); // Log the status code
+
       if (res.status === 200) {
+        console.log('Login successful!')
         navigate('/');
       } else {
+        console.log(res.status)
+        console.log(res.statusText);
+        const alert_str = `Login failed: ${res.status}: ${res.statusText}`;
+
         // eslint-disable-next-line no-alert
-        alert(`Login failed`);
+        alert(alert_str);
       }
     });
   }

@@ -1,0 +1,21 @@
+meta {
+  name: Save Essay
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8000/api/essays/edit?id=662d4a5030227c4c56bd4b6d
+  body: json
+  auth: none
+}
+
+query {
+  id: 662d4a5030227c4c56bd4b6d
+}
+
+body:json {
+  {
+    "essayText": "my favorite color is red"
+  }
+}

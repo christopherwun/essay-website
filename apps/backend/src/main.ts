@@ -5,12 +5,17 @@ import cookieSession from 'cookie-session';
 import accRouter from './routes/account';
 import eRouter from './routes/essays';
 import cors from 'cors';
+import { Server } from 'socket.io';
+
+import { createServer } from 'node:http';
 
 // read environment variables from .env file
 dotenv.config();
 const PORT = process.env.PORT ?? 8000;
 
 const app = express();
+const server = createServer(app); // Create HTTP server using Express app
+const io = new Server(server); // Create Socket.IO server
 
 // connect to MongoDB
 const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/test';
@@ -32,10 +37,16 @@ app.use(
 
 // add middleware to set CORS headers
 const corsOptions = {
-  origin: 'http://localhost:3000', // Specify the exact origin
-  credentials: true, // Allow credentials (cookies)
+  // origin is localhost:3000
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow only GET, POST, PUT, DELETE requests
+  allowedHeaders: ['Content-Type'],
+  credentials: true // Allow cookies to be sent with requests
+  // credentials: true, // Allow credentials (cookies)
 };
 app.use(cors(corsOptions));
+// app.use(cors());
+
 
 // define root route
 app.get('/api/hello', (_, res) => {
@@ -49,15 +60,35 @@ app.use('/api/account', accRouter);
 app.use('/api/essays', eRouter);
 
 // define error handler
-function errorHandler(err, req, res) {
+function errorHandler(err, req, res, next) {
   // eslint-disable-next-line no-console
   console.log(err.stack); // log the error for debugging purposes
-  res.status(err.status || 500).json({ error: err.message });
+  res.status(500).json({ message: err.message });
+  next();
 }
 app.use(errorHandler);
 
+console.log('setting up socket.io');
+io.on('connection', (socket) => {
+  io.emit('connected', 'a user connected');
+  console.log('a user connected');
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+
+  socket.on('essaysUpdated', (msg, id) => {
+    console.log('updated essays');
+    io.emit('essaysUpdated', msg, id);
+  });
+
+  socket.on('hello', (msg) => {
+    console.log('message: ' + msg);
+  });
+});
+
 // listen
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Now listening on port ${PORT}.`);
 });
