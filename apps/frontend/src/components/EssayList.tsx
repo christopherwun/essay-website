@@ -25,15 +25,17 @@ export default function EssayList({
   const updateEssays = (updatedEssays, updatedID) => {
     setEssays(updatedEssays);
     // set focused essay feedback to the updated feedback
-    const updatedFocusedEssay = updatedEssays.find((essay) => essay._id === updatedID);
+    const updatedFocusedEssay = updatedEssays.find(
+      (essay) => essay._id === updatedID,
+    );
     // setFocusedEssay(updatedFocusedEssay);
-  }
+  };
 
   useEffect(() => {
-    const socket = io("http://localhost:8000", { transports: ['websocket'] }); // "http://localhost:3000
+    const socket = io('http://localhost:8000', { transports: ['websocket'] }); // "http://localhost:3000
 
     // Listen for 'essaysUpdated' event emitted by the server
-    socket.emit('hello', 'hello from frontend')
+    socket.emit('hello', 'hello from frontend');
     socket.on('essaysUpdated', (updatedEssays, updatedID) => {
       updateEssays(updatedEssays, updatedID);
     });
@@ -48,25 +50,23 @@ export default function EssayList({
       socket.off('essaysUpdated');
     };
   }, []);
-  
 
   return (
     <div className="essays">
       {/* Button to add new essay */}
-        <div style={{ textAlign: 'center', width: '100%', }}>
-          <button className="essay-button" onClick={addEssay}>
-            Add Custom Prompt
-          </button>
-        </div>
+      <div style={{ textAlign: 'center', width: '100%' }}>
+        <button className="essay-button" onClick={addEssay}>
+          Add Custom Prompt
+        </button>
+      </div>
       {/* List of essays, with prompt preview and writing preview */}
       <div className="post-list">
         {
-        // isLoading ? (
-        //   <p>Loading...</p>
-        // ) : error ? (
-        //   <p>Error loading posts</p>
-        // ) :
-         (
+          // isLoading ? (
+          //   <p>Loading...</p>
+          // ) : error ? (
+          //   <p>Error loading posts</p>
+          // ) :
           essays.map((essay, index) => (
             // include keyevent
             <div key={index}>
@@ -81,11 +81,10 @@ export default function EssayList({
 
                 {/* Preview test in 1 line,, only include first line of text */}
                 <p>{essay.essayText?.substr(0, 50)}</p>
-                
               </button>
             </div>
           ))
-        )}
+        }
       </div>
     </div>
   );

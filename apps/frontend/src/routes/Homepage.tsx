@@ -62,7 +62,7 @@ export default function Homepage() {
       credentials: 'include',
       body: JSON.stringify({
         prompt: question,
-        essayText: '', 
+        essayText: '',
       }),
     }).then((res) => {
       if (res.status === 201) {

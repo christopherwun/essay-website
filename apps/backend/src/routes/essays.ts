@@ -24,7 +24,6 @@ eRouter.get('/', requireAuth, async (req, res, next) => {
     }
     const essays = await Essay.find({ user: userDoc.username });
     res.status(200).json(essays);
-
   } catch (err) {
     res.status(500).json({ message: 'Error fetching questions' });
     // console.error(err);
@@ -42,7 +41,6 @@ eRouter.get('/:id', requireAuth, async (req, res, next) => {
       return;
     }
     res.status(200).json(essay);
-
   } catch (err) {
     res.status(500).json({ message: 'Error fetching essay' });
     next(err);
@@ -60,11 +58,10 @@ eRouter.post('/add', requireAuth, async (req, res, next) => {
       user,
     });
     await essay.save();
-    
 
     // Emit an 'essaysUpdated' event to all connected clients
     const essays = await Essay.find({ user });
-    const socket = io("http://localhost:8000", { transports: ['websocket'] });
+    const socket = io('http://localhost:8000', { transports: ['websocket'] });
     socket.emit('essaysUpdated', essays, essay._id);
 
     // Then, update the user's essays array
@@ -106,10 +103,9 @@ eRouter.post('/edit/:id', requireAuth, async (req, res, next) => {
     // Emit an 'essaysUpdated' event to all connected clients
     const user = req.session!.user;
     const essays = await Essay.find({ user });
-    const socket = io("http://localhost:8000", { transports: ['websocket'] });
+    const socket = io('http://localhost:8000', { transports: ['websocket'] });
     socket.emit('hello', 'hello from backend');
     socket.emit('essaysUpdated', essays, essayId);
-    
   } catch (err) {
     res.status(400).json({ message: 'Essay not updated' });
     next(err);
@@ -130,8 +126,10 @@ eRouter.post('/feedback/:id', requireAuth, async (req, res, next) => {
 
     // Use OpenAI to generate feedback
     let chatPrompt = `Feedback on the essay: ${essay.essayText}. The prompt was: ${essay.prompt}.`;
-    chatPrompt += 'Make exactly 1 positive comment and up to 5 negative comments.'
-    chatPrompt += 'Be sure to provide feedback on the essay, make sure it has sufficient length and detail.';
+    chatPrompt +=
+      'Make exactly 1 positive comment and up to 5 negative comments.';
+    chatPrompt +=
+      'Be sure to provide feedback on the essay, make sure it has sufficient length and detail.';
     const feedback = await openai.chat.completions.create({
       messages: [{ role: 'user', content: chatPrompt }],
       model: 'gpt-3.5-turbo-0125',
@@ -139,7 +137,10 @@ eRouter.post('/feedback/:id', requireAuth, async (req, res, next) => {
     if (!feedback.choices || feedback.choices.length === 0) {
       res.status(500).json({ message: 'Error getting feedback' });
       return;
-    } else if (!feedback.choices[0].message || !feedback.choices[0].message.content) {
+    } else if (
+      !feedback.choices[0].message ||
+      !feedback.choices[0].message.content
+    ) {
       res.status(500).json({ message: 'Error getting feedback' });
       return;
     }
@@ -153,10 +154,9 @@ eRouter.post('/feedback/:id', requireAuth, async (req, res, next) => {
     const user = req.session!.user;
     const essays = await Essay.find({ user });
 
-    const socket = io("http://localhost:8000", { transports: ['websocket'] });
+    const socket = io('http://localhost:8000', { transports: ['websocket'] });
     socket.emit('hello', 'hello from backend');
     socket.emit('essaysUpdated', essays, essayId);
-
   } catch (err) {
     res.status(400).json({ message: 'Feedback not added' });
     next(err);

@@ -41,12 +41,11 @@ const corsOptions = {
   origin: 'http://localhost:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow only GET, POST, PUT, DELETE requests
   allowedHeaders: ['Content-Type'],
-  credentials: true // Allow cookies to be sent with requests
+  credentials: true, // Allow cookies to be sent with requests
   // credentials: true, // Allow credentials (cookies)
 };
 app.use(cors(corsOptions));
 // app.use(cors());
-
 
 // define root route
 app.get('/api/hello', (_, res) => {

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useForm, SubmitHandler } from 'react-hook-form';
 import '../app.css';
 
 type FormData = {
@@ -24,9 +24,8 @@ export default function LogIn() {
       }
     });
   });
-    
 
-  const onSubmit: SubmitHandler<FormData> = data => {
+  const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
     // use fetch to login
     fetch('/api/account/login', {
@@ -45,10 +44,10 @@ export default function LogIn() {
       console.log(res.status); // Log the status code
 
       if (res.status === 200) {
-        console.log('Login successful!')
+        console.log('Login successful!');
         navigate('/');
       } else {
-        console.log(res.status)
+        console.log(res.status);
         console.log(res.statusText);
         const alert_str = `Login failed: ${res.status}: ${res.statusText}`;
 
@@ -56,7 +55,7 @@ export default function LogIn() {
         alert(alert_str);
       }
     });
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form">
@@ -64,22 +63,20 @@ export default function LogIn() {
       <div className="form-inputs">
         <label className="form-label">
           Username
-          <input {...register("username")} className='form-input'/>
+          <input {...register('username')} className="form-input" />
         </label>
         <label className="form-label">
           Password
-          <input {...register("password")} className='form-input'/>
+          <input {...register('password')} className="form-input" />
         </label>
-      <button type="submit" className="form-button">
-        Log In
-      </button>
-      <h4>
+        <button type="submit" className="form-button">
+          Log In
+        </button>
+        <h4>
           {/* eslint-disable-next-line react/no-unescaped-entities */}
-          Don't have an account?{' '}
-          <Link to="/signup">Sign Up</Link>
+          Don't have an account? <Link to="/signup">Sign Up</Link>
         </h4>
-        </div>
-
+      </div>
     </form>
   );
 }

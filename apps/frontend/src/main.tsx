@@ -4,7 +4,7 @@ import {
   createHashRouter,
   RouterProvider,
   RouteObject,
-  Navigate
+  Navigate,
 } from 'react-router-dom';
 
 import axios from 'axios';
@@ -38,7 +38,9 @@ const App = () => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axios.get('/api/account/user', { withCredentials: true });
+        const response = await axios.get('/api/account/user', {
+          withCredentials: true,
+        });
         setIsLoggedIn(response.status === 200);
       } catch (error) {
         setIsLoggedIn(false);
@@ -50,11 +52,7 @@ const App = () => {
 
   return (
     <RouterProvider router={router}>
-      {isLoggedIn ? (
-        <Navigate to="/" />
-      ) : (
-        <Navigate to="/login" />
-      )}
+      {isLoggedIn ? <Navigate to="/" /> : <Navigate to="/login" />}
     </RouterProvider>
   );
 };

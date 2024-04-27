@@ -41,7 +41,6 @@ p {
   line-height: 1.1;
   padding: 0 0.5em;
   margin: 0.5em 0;
-  
 }
 
 button {
@@ -72,7 +71,7 @@ input {
   font-family: inherit;
   transition: border-color 0.25s;
   background-color: #f9f9f9;
-  color: rgba(40, 38, 38, 0.87)
+  color: rgba(40, 38, 38, 0.87);
 }
 input:focus,
 input:focus-visible {

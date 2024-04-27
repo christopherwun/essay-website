@@ -25,7 +25,9 @@ export default function Navbar({
         >
           {/* Include a space after Hi user */}
           <p>Hi {user} </p>
-          <button onClick={logout} className='answer-button'>Logout</button>
+          <button onClick={logout} className="answer-button">
+            Logout
+          </button>
         </div>
       ) : (
         <button onClick={() => navigate('/login')}>Login</button>

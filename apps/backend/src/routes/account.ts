@@ -57,7 +57,7 @@ accRouter.post('/signup', async (req, res, next) => {
     res.status(201).json({ message: 'User created' });
     next();
   } catch (err) {
-    res.status(400).json({ message: `User not created: ${  err}` });
+    res.status(400).json({ message: `User not created: ${err}` });
     // console.error(err);
     next(err);
   }
@@ -69,7 +69,7 @@ accRouter.post('/login', async (req, res, next) => {
     // if (req.session!.user) {
     //   // RETURN 200 OK
     //   res.status(200).json({ message: 'Already logged in' });
-    //   next();     
+    //   next();
     //   return;
     // }
     const user = await User.findOne({ username: req.body.username });
@@ -87,7 +87,6 @@ accRouter.post('/login', async (req, res, next) => {
     req.session!.user = user.username;
     res.status(200).json({ message: 'Login successful' });
     next();
-    
   } catch (err) {
     res.status(403).json({ message: 'Unauthorized' });
     // console.error(err);
