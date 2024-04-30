@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../app.css';
+// import { Document, Page } from 'react-pdf';
+// import pdf from 'pdf-parse';
 
 export default function EssayBody({
   focusedEssay,
@@ -23,6 +25,8 @@ export default function EssayBody({
   };
 }) {
   const [loadingFeedback, setLoadingFeedback] = useState(false);
+  // const [numPages, setNumPages] = useState(null);
+  // const [pdfText, setPdfText] = useState('');
 
   function getFeedback() {
     setLoadingFeedback(true);
@@ -76,13 +80,13 @@ export default function EssayBody({
       }),
     }).then((res) => {
       if (res.status === 200) {
-        // update the focused post
-        res.json().then((data) => {
-          setFocusedEssay({
-            ...focusedEssay,
-            essayText: data.essayText,
-          });
-        });
+        // // update the focused post
+        // res.json().then((data) => {
+        //   setFocusedEssay({
+        //     ...focusedEssay,
+        //     essayText: data.essayText,
+        //   });
+        // });
       } else {
         console.log(focusedEssay._id);
         const alert_str = `Save failed: ${res.statusText}`;
@@ -91,6 +95,43 @@ export default function EssayBody({
       }
     });
   }
+
+  // function scanPDF() {
+  //   const input = document.createElement('input');
+  //   input.type = 'file';
+  //   input.accept = 'application/pdf';
+
+  //   input.onchange = async (event) => {
+  //     const fileInput = event.target as HTMLInputElement;
+  //     const file = fileInput.files && fileInput.files[0];
+
+  //     if (file) {
+  //       // const formData = new FormData();
+  //       // formData.append('pdf', file);
+
+  //       // // Use pdf-parse to extract text from the PDF
+  //       // const buffer = await file.arrayBuffer();
+  //       // const parsedData = await pdfParse(buffer);
+  //       // setPdfText(parsedData.text);
+  //       const reader = new FileReader();
+  //       reader.onload = async () => {
+  //         const buffer = Buffer.from(reader.result as ArrayBuffer);
+  //         const parsedData = await pdf(buffer);
+  //         setPdfText(parsedData.text);
+  //         setFocusedEssay({
+  //           ...focusedEssay,
+  //           essayText: parsedData.text,
+  //         });
+  //       }
+  //     }
+  //   };
+
+  //   input.click();
+  // }
+
+  // function onDocumentLoadSuccess({ numPages }) {
+  //   setNumPages(numPages);
+  // }
 
   return (
     <div className="post-body">
@@ -112,6 +153,20 @@ export default function EssayBody({
               className="answer-input"
             />
           </div>
+          {/* <button className="answer" onClick={scanPDF}>
+            Scan PDF
+          </button> */}
+          {/* Show PDF content */}
+          {/* {pdfText && (
+            <Document
+              file={{ data: pdfText }}
+              onLoadSuccess={onDocumentLoadSuccess}
+            >
+              {Array.from(new Array(numPages), (el, index) => (
+                <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+              ))}
+            </Document>
+          )} */}
           <button className="answer" onClick={saveEssay}>
             Save Changes
           </button>
@@ -135,7 +190,7 @@ export default function EssayBody({
           </button>
         </>
       ) : (
-        <p>Select a post to view</p>
+        <p>Select a prompt to start writing and getting feedback!</p>
       )}
     </div>
   );

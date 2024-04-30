@@ -98,7 +98,7 @@ eRouter.post('/edit/:id', requireAuth, async (req, res, next) => {
     // Update the essay text
     essay.essayText = req.body.essayText;
     await essay.save();
-    res.status(200).json({ message: 'Essay updated' });
+    res.status(200).json({ message: 'Essay updated' , essayText: essay.essayText});
 
     // Emit an 'essaysUpdated' event to all connected clients
     const user = req.session!.user;
@@ -127,7 +127,7 @@ eRouter.post('/feedback/:id', requireAuth, async (req, res, next) => {
     // Use OpenAI to generate feedback
     let chatPrompt = `Feedback on the essay: ${essay.essayText}. The prompt was: ${essay.prompt}.`;
     chatPrompt +=
-      'Make exactly 1 positive comment and up to 5 negative comments.';
+      'Make 1-2 positive comments and 3-4 negative comments. Do not number them. Format it as a teacher\'s feedback.';
     chatPrompt +=
       'Be sure to provide feedback on the essay, make sure it has sufficient length and detail.';
     const feedback = await openai.chat.completions.create({
@@ -148,7 +148,7 @@ eRouter.post('/feedback/:id', requireAuth, async (req, res, next) => {
     // Save the feedback to the database
     essay.feedback = feedback.choices[0].message.content;
     await essay.save();
-    res.status(200).json({ message: 'Feedback added' });
+    res.status(200).json({ message: 'Feedback added', feedback: essay.feedback });
 
     // Emit an 'essaysUpdated' event to all connected clients
     const user = req.session!.user;

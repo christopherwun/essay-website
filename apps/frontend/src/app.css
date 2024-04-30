@@ -22,6 +22,8 @@
   align-items: center;
   width: 100%;
   padding: 1em;
+  /* vertical align to center */
+  align-items: center;
 }
 
 .main {
@@ -77,7 +79,13 @@
   width: 100%;
 }
 
+.answer {
+  margin-bottom: 1em;
+}
+
 .answer-input {
+  resize: vertical;
+
   /* margin-left: 0.5em; */
   height: 2em;
   margin-right: 0.5em;

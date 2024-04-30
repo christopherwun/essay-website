@@ -24,7 +24,7 @@ export default function Navbar({
           }}
         >
           {/* Include a space after Hi user */}
-          <p>Hi {user} </p>
+          <p style={{alignSelf: 'center'}}>Hi {user}! </p>
           <button onClick={logout} className="answer-button">
             Logout
           </button>

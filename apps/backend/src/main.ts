@@ -5,8 +5,8 @@ import cookieSession from 'cookie-session';
 import accRouter from './routes/account';
 import eRouter from './routes/essays';
 import cors from 'cors';
-import { Server } from 'socket.io';
 
+import { Server } from 'socket.io';
 import { createServer } from 'node:http';
 
 // read environment variables from .env file
@@ -82,7 +82,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('hello', (msg) => {
-    console.log('message: ' + msg);
+    console.log(`message: ${  msg}`);
   });
 });
 
