@@ -67,7 +67,11 @@ export default function LogIn() {
         </label>
         <label className="form-label">
           Password
-          <input {...register('password')} className="form-input" />
+          <input
+            {...register('password')}
+            type="password"
+            className="form-input"
+          />
         </label>
         <button type="submit" className="form-button">
           Log In
